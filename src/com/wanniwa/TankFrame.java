@@ -7,6 +7,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
+    boolean bU = false;
+    boolean bD = false;
+    boolean bL = false;
+    boolean bR = false;
+
     int x,y =50;
     public TankFrame(){
         this.setSize(800, 600);
@@ -29,8 +34,6 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         System.out.println("paint");
         g.fillRect(x,y,50,50);
-        x += 10;
-        y += 10;
     }
 
     class KeyHandler implements KeyListener {
@@ -43,12 +46,44 @@ public class TankFrame extends Frame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println("按下");
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_UP:
+                    bU = true;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = true;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    bL = true;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = true;
+                    break;
+                default:
+                    break;
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            System.out.println("keyReleased");
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_UP:
+                    bU = false;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = false;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    bL = false;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = false;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
