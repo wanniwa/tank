@@ -12,7 +12,7 @@ public class TankFrame extends Frame {
     boolean bL = false;
     boolean bR = false;
 
-    int x,y =50;
+    int x,y =200;
     public TankFrame(){
         this.setSize(800, 600);
         this.setResizable(false);
