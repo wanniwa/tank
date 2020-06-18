@@ -1,18 +1,14 @@
-package com.wanniwa;
-
-import com.wanniwa.tank.Dir;
+package com.wanniwa.tank;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-
-    int x,y =200;
-
-    Dir dir = Dir.UP;
-
-    int speed = 10;
+    Tank myTank = new Tank(200, 200, Dir.DOWN);
 
     public TankFrame(){
         this.setSize(800, 600);
@@ -33,23 +29,7 @@ public class TankFrame extends Frame {
 
     @Override
     public void paint(Graphics g) {
-        g.fillRect(x,y,50,50);
-        switch (dir) {
-            case UP:
-                y -= speed;
-                break;
-            case DOWN:
-                y += speed;
-                break;
-            case LEFT:
-                x -= speed;
-                break;
-            case RIGHT:
-                x += speed;
-                break;
-            default:
-                break;
-        }
+        myTank.paint(g);
     }
 
     class KeyHandler extends KeyAdapter {
@@ -109,16 +89,16 @@ public class TankFrame extends Frame {
         }
         public void setMainTankDir(){
             if (bU) {
-                dir = Dir.UP;
+                myTank.setDir(Dir.UP);
             }
             if (bD) {
-                dir = Dir.DOWN;
+                myTank.setDir(Dir.DOWN);
             }
             if (bL) {
-                dir = Dir.LEFT;
+                myTank.setDir(Dir.LEFT);
             }
             if (bR) {
-                dir = Dir.RIGHT;
+                myTank.setDir(Dir.RIGHT);
             }
         }
 
