@@ -8,10 +8,12 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
 
-    Tank myTank = new Tank(200, 200, Dir.DOWN);
+    Tank myTank = new Tank(200, 200, Dir.DOWN, this);
     Bullet bullet = new Bullet(300, 300, Dir.DOWN);
-    public TankFrame(){
-        this.setSize(800, 600);
+    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+
+    public TankFrame() {
+        this.setSize(GAME_WIDTH, GAME_HEIGHT);
         this.setResizable(false);
         this.setTitle("tank war");
         this.setVisible(true);
@@ -27,11 +29,7 @@ public class TankFrame extends Frame {
         this.addKeyListener(new KeyHandler());
     }
 
-    @Override
-    public void paint(Graphics g) {
-        myTank.paint(g);
-        bullet.paint(g);
-    }
+
 
     class KeyHandler extends KeyAdapter {
 
@@ -83,15 +81,19 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_RIGHT:
                     bR = false;
                     break;
+                case KeyEvent.VK_CONTROL:
+                    myTank.fire();
+                    break;
                 default:
                     break;
             }
-           setMainTankDir();
+            setMainTankDir();
         }
-        public void setMainTankDir(){
+
+        public void setMainTankDir() {
             if (!bU && !bD && !bL && !bR) {
                 myTank.setMoving(false);
-            }else {
+            } else {
                 myTank.setMoving(true);
             }
             if (bU) {
@@ -110,7 +112,27 @@ public class TankFrame extends Frame {
 
     }
 
-    private void move() {
+    Image offScreenImage = null;
 
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color color = gOffScreen.getColor();
+        gOffScreen.setColor(Color.BLACK);
+        gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        gOffScreen.setColor(color);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage, 0, 0, null);
     }
+
+    @Override
+    public void paint(Graphics g) {
+        myTank.paint(g);
+        bullet.paint(g);
+    }
+
+
 }
