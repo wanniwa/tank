@@ -54,6 +54,8 @@ public class TankFrame extends Frame {
 
         @Override
         public void keyPressed(KeyEvent e) {
+            System.out.println(1111);
+            new Thread(()->new Audio("audio/tank_move.wav").play()).start();
             int keyCode = e.getKeyCode();
             switch (keyCode) {
                 case KeyEvent.VK_UP:

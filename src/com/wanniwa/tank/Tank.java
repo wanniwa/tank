@@ -62,6 +62,7 @@ public class Tank {
 
     private void move() {
         if (!moving) return;
+        if (!living) return;
         switch (dir) {
             case UP:
                 y -= speed;
@@ -78,7 +79,17 @@ public class Tank {
             default:
                 break;
         }
-        if (this.getGroup() == Group.BAD && random.nextInt(100) > 95) this.fire();
+        if (this.getGroup() == Group.BAD && random.nextInt(100) > 95) {
+            this.fire();
+        }
+        //随机方向
+        if (this.getGroup() == Group.BAD && random.nextInt(100) > 95) {
+            randomDir();
+        }
+    }
+
+    private void randomDir() {
+        this.dir = Dir.values()[random.nextInt(4)];
     }
 
     public void fire() {
@@ -101,7 +112,7 @@ public class Tank {
         }
         tf.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tf));
 
-        if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
     }
 
     public int getX() {
