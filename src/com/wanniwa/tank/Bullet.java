@@ -1,16 +1,18 @@
 package com.wanniwa.tank;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Bullet {
     private static final int SPEED = 10;
-    private static int WIDTH =10, HEIGHT = 10;
-    private int x,y;
+    public static int WIDTH = ResourceMgr.bulletD.getWidth();
+    public static int HEIGHT = ResourceMgr.bulletD.getHeight();
+    private int x, y;
     private Dir dir;
     private boolean live = true;
     private TankFrame tankFrame;
 
-    public Bullet(int x, int y, Dir dir,TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -26,23 +28,29 @@ public class Bullet {
         //g.setColor(Color.RED);
         //g.fillOval(x,y,WIDTH,HEIGHT);
         //g.setColor(color);
-
+        BufferedImage bufferedImage;
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.bulletL, x, y, null);
+                bufferedImage =  ResourceMgr.bulletL;
                 break;
             case UP:
-                g.drawImage(ResourceMgr.bulletU, x, y, null);
+                bufferedImage =  ResourceMgr.bulletU;
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.bulletD, x, y, null);
+                bufferedImage =  ResourceMgr.bulletD;
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.bulletL, x, y, null);
+                bufferedImage = ResourceMgr.bulletR;
                 break;
+            default:
+                bufferedImage = null;
         }
+        HEIGHT = bufferedImage.getHeight();
+        WIDTH = bufferedImage.getWidth();
+        g.drawImage(bufferedImage, x-WIDTH/2, y-HEIGHT/2, null);
         move();
     }
+
     private void move() {
         switch (dir) {
             case UP:
@@ -65,6 +73,7 @@ public class Bullet {
         }
 
     }
+
     public int getX() {
         return x;
     }

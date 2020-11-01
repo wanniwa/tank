@@ -8,6 +8,7 @@ import java.util.Objects;
 public class ResourceMgr {
     public static BufferedImage tankL, tankU, tankR, tankD;
     public static BufferedImage bulletL, bulletU, bulletR, bulletD;
+
     static {
         try {
             tankL = ImageIO.read(Objects.requireNonNull(ResourceMgr.class.getClassLoader().getResourceAsStream("images/tankL.gif")));
@@ -22,6 +23,27 @@ public class ResourceMgr {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static BufferedImage getBulletDirectionImage(Dir dir) {
+        BufferedImage bufferedImage;
+        switch (dir) {
+            case LEFT:
+                bufferedImage =  bulletL;
+            break;
+            case UP:
+                bufferedImage =  bulletU;
+            break;
+            case DOWN:
+                bufferedImage =  bulletD;
+            break;
+            case RIGHT:
+                bufferedImage = bulletR;
+            break;
+            default:
+                bufferedImage = null;
+        }
+        return bufferedImage;
     }
 
 

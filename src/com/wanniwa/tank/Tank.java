@@ -1,6 +1,7 @@
 package com.wanniwa.tank;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Tank {
     private int x, y;
@@ -11,7 +12,10 @@ public class Tank {
 
     private boolean moving = false;
 
-    private TankFrame tankFrame;
+    private final TankFrame tankFrame;
+
+    public static int WIDTH;
+    public static int HEIGHT;
 
     public Tank(int x, int y, Dir dir, TankFrame tankFrame) {
         this.x = x;
@@ -25,20 +29,28 @@ public class Tank {
         //g.setColor(Color.YELLOW);
         //g.fillRect(x,y,50,50);
         //g.setColor(color);
+        BufferedImage bufferedImage;
         switch (dir) {
             case LEFT:
-                g.drawImage(ResourceMgr.tankL, x, y, null);
+                bufferedImage = ResourceMgr.tankL;
                 break;
             case UP:
-                g.drawImage(ResourceMgr.tankU, x, y, null);
+                bufferedImage = ResourceMgr.tankU;
+
                 break;
             case DOWN:
-                g.drawImage(ResourceMgr.tankD, x, y, null);
+                bufferedImage = ResourceMgr.tankD;
+
                 break;
             case RIGHT:
-                g.drawImage(ResourceMgr.tankR, x, y, null);
+                bufferedImage = ResourceMgr.tankR;
                 break;
+            default:
+                bufferedImage = null;
         }
+        HEIGHT = bufferedImage.getHeight();
+        WIDTH = bufferedImage.getWidth();
+        g.drawImage(bufferedImage, x, y, null);
         move();
     }
 
@@ -79,6 +91,23 @@ public class Tank {
     }
 
     public void fire() {
-        tankFrame.bullets.add(new Bullet(this.x+20, this.y+20, this.dir, tankFrame));
+        int bx = this.x + WIDTH / 2;
+        int by = this.y + HEIGHT / 2;
+
+        switch (dir) {
+            case LEFT:
+                bx -= WIDTH / 2;
+                break;
+            case UP:
+                by -= HEIGHT / 2;
+                break;
+            case DOWN:
+                by += HEIGHT / 2;
+                break;
+            case RIGHT:
+                bx += WIDTH / 2;
+                break;
+        }
+        tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.tankFrame));
     }
 }
