@@ -10,18 +10,20 @@ public class Bullet {
     private int x, y;
     private Dir dir;
     private boolean living = true;
-    private TankFrame tankFrame;
+    private TankFrame tf;
+    private Group group = Group.BAD;
 
-    public Bullet(int x, int y, Dir dir, TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.tankFrame = tf;
+        this.group = group;
+        this.tf = tf;
     }
 
     public void paint(Graphics g) {
         if (!living) {
-            tankFrame.bullets.remove(this);
+            tf.bullets.remove(this);
         }
 
         //Color color = g.getColor();
@@ -31,13 +33,13 @@ public class Bullet {
         BufferedImage bufferedImage;
         switch (dir) {
             case LEFT:
-                bufferedImage =  ResourceMgr.bulletL;
+                bufferedImage = ResourceMgr.bulletL;
                 break;
             case UP:
-                bufferedImage =  ResourceMgr.bulletU;
+                bufferedImage = ResourceMgr.bulletU;
                 break;
             case DOWN:
-                bufferedImage =  ResourceMgr.bulletD;
+                bufferedImage = ResourceMgr.bulletD;
                 break;
             case RIGHT:
                 bufferedImage = ResourceMgr.bulletR;
@@ -47,7 +49,7 @@ public class Bullet {
         }
         HEIGHT = bufferedImage.getHeight();
         WIDTH = bufferedImage.getWidth();
-        g.drawImage(bufferedImage, x-WIDTH/2, y-HEIGHT/2, null);
+        g.drawImage(bufferedImage, x - WIDTH / 2, y - HEIGHT / 2, null);
         move();
     }
 
@@ -102,12 +104,22 @@ public class Bullet {
         Rectangle rect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
         Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         if (rect.intersects(rect2)) {
-            tank.die();
-            this.die();
+            if (tank.getGroup() != this.group) {
+                tank.die();
+                this.die();
+            }
         }
     }
 
     private void die() {
         living = false;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

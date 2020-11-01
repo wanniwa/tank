@@ -2,27 +2,32 @@ package com.wanniwa.tank;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Tank {
 
 
-    private static final int speed = 5;
+    private static final int speed = 2;
 
     public static int WIDTH;
     public static int HEIGHT;
 
+    private Random random = new Random();
+    private Group group = Group.BAD;
+
 
     private int x, y;
     private Dir dir = Dir.DOWN;
-    private boolean moving = false;
+    private boolean moving = true;
     private final TankFrame tankFrame;
 
     private boolean living = true;
 
-    public Tank(int x, int y, Dir dir, TankFrame tankFrame) {
+    public Tank(int x, int y, Dir dir, Group group, TankFrame tankFrame) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.group = group;
         this.tankFrame = tankFrame;
     }
 
@@ -78,6 +83,7 @@ public class Tank {
             default:
                 break;
         }
+        if (random.nextInt(10) > 7) this.fire();
     }
 
     public void fire() {
@@ -98,7 +104,7 @@ public class Tank {
                 bx += WIDTH / 2;
                 break;
         }
-        tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.tankFrame));
+        tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tankFrame));
     }
 
     public int getX() {
@@ -131,6 +137,14 @@ public class Tank {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public void die() {
