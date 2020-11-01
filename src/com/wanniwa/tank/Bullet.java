@@ -10,8 +10,8 @@ public class Bullet {
     private int x, y;
     private Dir dir;
     private boolean living = true;
-    private TankFrame tf;
-    private Group group = Group.BAD;
+    private final TankFrame tf;
+    private Group group;
 
     public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
@@ -101,13 +101,12 @@ public class Bullet {
     }
 
     public void collideWith(Tank tank) {
+        if (this.group == tank.getGroup()) return;
         Rectangle rect = new Rectangle(this.x, this.y, WIDTH, HEIGHT);
         Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH, Tank.HEIGHT);
         if (rect.intersects(rect2)) {
-            if (tank.getGroup() != this.group) {
                 tank.die();
                 this.die();
-            }
         }
     }
 

@@ -12,13 +12,13 @@ public class Tank {
     public static int WIDTH;
     public static int HEIGHT;
 
-    private Random random = new Random();
-    private Group group = Group.BAD;
+    private final Random random = new Random();
+    private Group group;
 
 
     private int x, y;
-    private Dir dir = Dir.DOWN;
-    private boolean moving = true;
+    private Dir dir;
+    private boolean moving = false;
     private final TankFrame tankFrame;
 
     private boolean living = true;
@@ -29,6 +29,9 @@ public class Tank {
         this.dir = dir;
         this.group = group;
         this.tankFrame = tankFrame;
+        if (group == Group.BAD) {
+            moving = true;
+        }
     }
 
     public void paint(Graphics g) {
@@ -83,7 +86,7 @@ public class Tank {
             default:
                 break;
         }
-        if (random.nextInt(10) > 7) this.fire();
+        if (this.getGroup() == Group.BAD && random.nextInt(100) > 95) this.fire();
     }
 
     public void fire() {
