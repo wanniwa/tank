@@ -107,6 +107,7 @@ public class Bullet {
         if (rect.intersects(rect2)) {
                 tank.die();
                 this.die();
+            tf.explodes.add(new Explode(tank.getX()+Tank.WIDTH/2-Explode.WIDTH/2, tank.getY()+Tank.HEIGHT/2-Explode.HEIGHT/2, tf));
         }
     }
 
