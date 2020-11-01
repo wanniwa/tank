@@ -4,18 +4,20 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Tank {
-    private int x, y;
 
-    private Dir dir = Dir.DOWN;
 
     private static final int speed = 5;
 
-    private boolean moving = false;
-
-    private final TankFrame tankFrame;
-
     public static int WIDTH;
     public static int HEIGHT;
+
+
+    private int x, y;
+    private Dir dir = Dir.DOWN;
+    private boolean moving = false;
+    private final TankFrame tankFrame;
+
+    private boolean living = true;
 
     public Tank(int x, int y, Dir dir, TankFrame tankFrame) {
         this.x = x;
@@ -29,6 +31,10 @@ public class Tank {
         //g.setColor(Color.YELLOW);
         //g.fillRect(x,y,50,50);
         //g.setColor(color);
+        if (!living) {
+            tankFrame.tanks.remove(this);
+        }
+
         BufferedImage bufferedImage;
         switch (dir) {
             case LEFT:
@@ -74,22 +80,6 @@ public class Tank {
         }
     }
 
-    public Dir getDir() {
-        return dir;
-    }
-
-    public void setDir(Dir dir) {
-        this.dir = dir;
-    }
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
     public void fire() {
         int bx = this.x + WIDTH / 2;
         int by = this.y + HEIGHT / 2;
@@ -109,5 +99,41 @@ public class Tank {
                 break;
         }
         tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.tankFrame));
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public void die() {
+        this.living = false;
     }
 }
