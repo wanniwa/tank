@@ -1,7 +1,6 @@
 package com.wanniwa.tank;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Tank {
@@ -9,8 +8,9 @@ public class Tank {
 
     private static final int speed = 2;
 
-    public static int WIDTH;
-    public static int HEIGHT;
+    public static int WIDTH = ResourceMgr.goodTankU.getWidth();
+
+    public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
 
     private final Random random = new Random();
     private Group group;
@@ -19,16 +19,16 @@ public class Tank {
     private int x, y;
     private Dir dir;
     private boolean moving = false;
-    private final TankFrame tankFrame;
+    private final TankFrame tf;
 
     private boolean living = true;
 
-    public Tank(int x, int y, Dir dir, Group group, TankFrame tankFrame) {
+    public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tankFrame = tankFrame;
+        this.tf = tf;
         if (group == Group.BAD) {
             moving = true;
         }
@@ -40,31 +40,23 @@ public class Tank {
         //g.fillRect(x,y,50,50);
         //g.setColor(color);
         if (!living) {
-            tankFrame.tanks.remove(this);
+            tf.tanks.remove(this);
         }
 
-        BufferedImage bufferedImage;
         switch (dir) {
             case LEFT:
-                bufferedImage = ResourceMgr.tankL;
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
                 break;
             case UP:
-                bufferedImage = ResourceMgr.tankU;
-
-                break;
-            case DOWN:
-                bufferedImage = ResourceMgr.tankD;
-
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU, x, y, null);
                 break;
             case RIGHT:
-                bufferedImage = ResourceMgr.tankR;
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR, x, y, null);
                 break;
-            default:
-                bufferedImage = null;
+            case DOWN:
+                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD, x, y, null);
+                break;
         }
-        HEIGHT = bufferedImage.getHeight();
-        WIDTH = bufferedImage.getWidth();
-        g.drawImage(bufferedImage, x, y, null);
         move();
     }
 
@@ -107,7 +99,9 @@ public class Tank {
                 bx += WIDTH / 2;
                 break;
         }
-        tankFrame.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tankFrame));
+        tf.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tf));
+
+        if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
     }
 
     public int getX() {
