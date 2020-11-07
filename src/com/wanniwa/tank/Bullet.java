@@ -108,7 +108,6 @@ public class Bullet {
 
     public void collideWith(Tank tank) {
         if (this.group == tank.getGroup()) return;
-        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH-5, Tank.HEIGHT-5);
         if (rect.intersects(tank.rect)) {
                 tank.die();
                 this.die();
