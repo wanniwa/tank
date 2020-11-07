@@ -54,7 +54,6 @@ public class TankFrame extends Frame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println(1111);
             new Thread(()->new Audio("audio/tank_move.wav").play()).start();
             int keyCode = e.getKeyCode();
             switch (keyCode) {
@@ -142,7 +141,7 @@ public class TankFrame extends Frame {
         g.setColor(Color.WHITE);
         g.drawString("子弹的数量"+bullets.size(),10,60);
         g.drawString("敌人的数量"+tanks.size(),10,80);
-        g.drawString("爆炸的数量"+tanks.size(),10,100);
+        g.drawString("爆炸的数量"+explodes.size(),10,100);
         g.setColor(color);
         myTank.paint(g);
 

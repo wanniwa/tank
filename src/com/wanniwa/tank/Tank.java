@@ -1,10 +1,10 @@
 package com.wanniwa.tank;
 
 import java.awt.*;
+import java.time.OffsetDateTime;
 import java.util.Random;
 
 public class Tank {
-
 
     private static final int speed = 2;
 
@@ -15,7 +15,7 @@ public class Tank {
     private final Random random = new Random();
     public Rectangle rect;
     private Group group;
-
+    FireStrategy fireStrategy;
 
     private int x, y;
     private Dir dir;
@@ -30,10 +30,11 @@ public class Tank {
         this.dir = dir;
         this.group = group;
         this.tf = tf;
-        rect = new Rectangle(x, y, Tank.WIDTH - 5, Tank.HEIGHT - 5);
+        this.rect = new Rectangle(x, y, Tank.WIDTH - 5, Tank.HEIGHT - 5);
         if (group == Group.BAD) {
             moving = true;
         }
+        this.fireStrategy = group == Group.GOOD ? new FourDirFireStrategy() : new DefaultFireStrategy();
     }
 
     public void paint(Graphics g) {
@@ -108,26 +109,7 @@ public class Tank {
     }
 
     public void fire() {
-        int bx = this.x + WIDTH / 2;
-        int by = this.y + HEIGHT / 2;
-
-        switch (dir) {
-            case LEFT:
-                bx -= WIDTH / 2;
-                break;
-            case UP:
-                by -= HEIGHT / 2;
-                break;
-            case DOWN:
-                by += HEIGHT / 2;
-                break;
-            case RIGHT:
-                bx += WIDTH / 2;
-                break;
-        }
-        tf.bullets.add(new Bullet(bx, by, this.dir, this.group, this.tf));
-
-        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+        fireStrategy.fire(this);
     }
 
     public int getX() {
@@ -172,5 +154,9 @@ public class Tank {
 
     public void die() {
         this.living = false;
+    }
+
+    public TankFrame getTf() {
+        return tf;
     }
 }
