@@ -1,10 +1,12 @@
 package com.wanniwa.tank;
 
+import com.wanniwa.tank.abstractfactory.BaseTank;
+
 import java.awt.*;
 import java.time.OffsetDateTime;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends BaseTank {
 
     private static final int speed = 2;
 

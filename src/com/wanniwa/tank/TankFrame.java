@@ -1,6 +1,10 @@
 package com.wanniwa.tank;
 
 
+import com.wanniwa.tank.abstractfactory.BaseExplode;
+import com.wanniwa.tank.abstractfactory.DefaultGameFactory;
+import com.wanniwa.tank.abstractfactory.GameFactory;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -17,7 +21,9 @@ public class TankFrame extends Frame {
     //地方坦克
     List<Tank> tanks = new ArrayList<>();
     //爆炸
-    List<Explode> explodes = new ArrayList<>();
+    List<BaseExplode> explodes = new ArrayList<>();
+
+    GameFactory gf = new DefaultGameFactory();
 
     static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
 

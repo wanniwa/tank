@@ -20,7 +20,7 @@ public class Bullet {
         this.dir = dir;
         this.group = group;
         this.tf = tf;
-        rect = new Rectangle(this.x, this.y, WIDTH-5, HEIGHT-5);
+        rect = new Rectangle(this.x, this.y, WIDTH - 5, HEIGHT - 5);
         tf.bullets.add(this);
     }
 
@@ -108,11 +108,12 @@ public class Bullet {
 
     public void collideWith(Tank tank) {
         if (this.group == tank.getGroup()) return;
-        Rectangle rect2 = new Rectangle(tank.getX(), tank.getY(), Tank.WIDTH-5, Tank.HEIGHT-5);
         if (rect.intersects(tank.rect)) {
-                tank.die();
-                this.die();
-            tf.explodes.add(new Explode(tank.getX()+Tank.WIDTH/2-Explode.WIDTH/2, tank.getY()+Tank.HEIGHT/2-Explode.HEIGHT/2, tf));
+            tank.die();
+            this.die();
+            int eX = tank.getX() + Tank.WIDTH / 2 - Explode.WIDTH / 2;
+            int eY = tank.getY() + Tank.HEIGHT / 2 - Explode.HEIGHT / 2;
+            tf.explodes.add(tf.gf.createExplode(eX, eY, tf));
         }
     }
 

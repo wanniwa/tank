@@ -1,15 +1,15 @@
 package com.wanniwa.tank;
 
+import com.wanniwa.tank.abstractfactory.BaseExplode;
+
 import java.awt.*;
 
-public class Explode {
+public class Explode extends BaseExplode {
     public static int WIDTH = ResourceMgr.explodes[0].getWidth();
     public static int HEIGHT = ResourceMgr.explodes[0].getHeight();
     private int x, y;
     private final TankFrame tf;
-
     private int step = 0;
-
 
     public Explode(int x, int y,  TankFrame tf) {
         this.x = x;
@@ -18,6 +18,7 @@ public class Explode {
         new Thread(()->new Audio("audio/explode.wav").play()).start();
     }
 
+    @Override
     public void paint(Graphics g) {
         g.drawImage(ResourceMgr.explodes[step++], x, y, null);
         //爆炸结束后从list中去除
