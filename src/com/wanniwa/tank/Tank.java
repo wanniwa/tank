@@ -34,7 +34,11 @@ public class Tank {
         if (group == Group.BAD) {
             moving = true;
         }
-        this.fireStrategy = group == Group.GOOD ? new FourDirFireStrategy() : new DefaultFireStrategy();
+        try {
+            this.fireStrategy = group == Group.GOOD ? (FireStrategy) Class.forName((String) PropertyMgr.get("goodFs")).newInstance() : (FireStrategy) Class.forName((String) PropertyMgr.get("badFs")).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void paint(Graphics g) {
